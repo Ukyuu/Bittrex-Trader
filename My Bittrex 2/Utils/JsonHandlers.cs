@@ -55,9 +55,9 @@ namespace My_Bittrex_2.Utils
             return account;
         }
 
-        private static string ApiSecret => "fdb2069401b2458294b7b693d78e6a0f";
+        private static string ApiSecret => "fdb2069401b2458294b7b693d78e6a0f"; // This is just a read-only API Key for test purpose
 
-        private static string ApiKey => "80232d40f3c74fd2bf4c61be0e2ef717";
+        private static string ApiKey => "80232d40f3c74fd2bf4c61be0e2ef717"; // Read-only API key for test purpose
 
         private static string Gethmacsha512(Encoding encoding, string apiSecret, string url)
         {
