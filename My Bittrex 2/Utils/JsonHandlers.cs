@@ -34,7 +34,7 @@ namespace My_Bittrex_2.Utils
             var apiKey = ApiKey;
             var apiSecret = ApiSecret;
 
-            var nonce = (int) (DateTime.UtcNow - new DateTime(1970, 1, 1)).TotalSeconds; // same as time() in PHP
+            var nonce = (int) (DateTime.UtcNow - new DateTime(1970, 1, 1)).TotalSeconds; // same as time() in PHP, need to integrate it
             var encoding = Encoding.UTF8;
             var url = @"https://bittrex.com/api/v1.1/account/getbalances?apikey=" + apiKey;
             var urlForAuth = url + "&nonce=" + nonce;
