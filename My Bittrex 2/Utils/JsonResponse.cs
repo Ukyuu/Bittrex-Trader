@@ -48,13 +48,14 @@ namespace My_Bittrex_2.Utils
             }
             else
             {
-                var allResults = new ObservableCollection<AccountCurrencies>(w.AccountCurrencies);
-                var temp2 = new ObservableCollection<AccountCurrencies>();
-                foreach (var getAccountResult in allResults)
-                {
-                    temp2.Add(getAccountResult);
-                }
-                temp.AddRange(temp2);
+                MessageBox.Show(w.AccountCurrencies);
+                //var allResults = new ObservableCollection<AccountCurrencies>(w.AccountCurrencies);
+                //var temp2 = new ObservableCollection<AccountCurrencies>();
+                //foreach (var getAccountResult in allResults)
+                //{
+                //    temp2.Add(getAccountResult);
+                //}
+                //temp.AddRange(temp2);
             }
 
 

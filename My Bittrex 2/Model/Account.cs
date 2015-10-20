@@ -19,7 +19,7 @@ namespace My_Bittrex_2.Model
     {
         public bool Success { get; set; }
         public string Message { get; set; }
-        public AccountCurrencies[] AccountCurrencies { get; set; }
+        public string AccountCurrencies { get; set; }
     }
 
 }
