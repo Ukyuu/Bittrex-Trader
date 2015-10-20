@@ -1,14 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Collections.ObjectModel;
-using System.IO;
 using System.Linq;
 using System.Net;
-using System.Net.Http;
 using System.Security.Cryptography;
 using System.Text;
-using System.Web.Script.Serialization;
 using My_Bittrex_2.Model;
+using My_Bittrex_2.Properties;
 using Resp = My_Bittrex_2.Utils.JsonResponse;
 
 namespace My_Bittrex_2.Utils
@@ -30,23 +27,19 @@ namespace My_Bittrex_2.Utils
 
         public static List<AccountCurrencies> GetAccountCurrencies()
         {
-            // TODO : add a way to get this from the user
-            var apiKey = ApiKey;
-            var apiSecret = ApiSecret;
-
+            if (Settings.Default.APIKey == null || Settings.Default.APISecret == null) return new List<AccountCurrencies>();
             var nonce = (int) (DateTime.UtcNow - new DateTime(1970, 1, 1)).TotalSeconds; // same as time() in PHP, need to integrate it
             var encoding = Encoding.UTF8;
-            var url = @"https://bittrex.com/api/v1.1/account/getbalances?apikey=" + apiKey;
-            var urlForAuth = url + "&nonce=" + nonce;
-            var result = Gethmacsha512(encoding, apiSecret, urlForAuth);
+            var urlForAuth = @"https://bittrex.com/api/v1.1/account/getbalances?apikey=" + Settings.Default.APIKey + "&nonce=" + nonce;
+            var result = Gethmacsha512(encoding, Settings.Default.APISecret, urlForAuth);
 
             // some var for the request
             var account = new List<AccountCurrencies>();
 
             // sending it to get the response
-            var request = (HttpWebRequest)WebRequest.Create(url);
+            var request = (HttpWebRequest)WebRequest.Create(urlForAuth);
             request.Headers.Add("apisign",result);
-            request.Headers.Add("nonce", nonce.ToString());
+            //request.Headers.Add("nonce", nonce.ToString());
             request.ContentType = "application/json";
             var response = (HttpWebResponse)request.GetResponse();
             var stream = response.GetResponseStream();
@@ -55,9 +48,6 @@ namespace My_Bittrex_2.Utils
             return account;
         }
 
-        private static string ApiSecret => "fdb2069401b2458294b7b693d78e6a0f"; // This is just a read-only API Key for test purpose
-
-        private static string ApiKey => "80232d40f3c74fd2bf4c61be0e2ef717"; // Read-only API key for test purpose
 
         private static string Gethmacsha512(Encoding encoding, string apiSecret, string url)
         {

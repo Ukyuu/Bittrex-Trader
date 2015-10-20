@@ -3,6 +3,7 @@ using System.Collections.ObjectModel;
 using System.IO;
 using System.Linq;
 using System.Web.Script.Serialization;
+using System.Windows.Forms;
 using My_Bittrex_2.Model;
 
 namespace My_Bittrex_2.Utils
@@ -32,23 +33,32 @@ namespace My_Bittrex_2.Utils
 
         public static void GetValue(Stream stream, List<AccountCurrencies> temp)
         {
-            AccountWrapper w = new AccountWrapper();
+            var w = new AccountWrapper();
 
             if (stream != null)
             {
                 var re = new StreamReader(stream);
                 var json = re.ReadToEnd();
-                w = (AccountWrapper)new JavaScriptSerializer().Deserialize(json, typeof(AccountWrapper));
+                w = (AccountWrapper) new JavaScriptSerializer().Deserialize(json, typeof (AccountWrapper));
             }
             if (w == null || !w.Success) return;
-            var allResults = new ObservableCollection<AccountCurrencies>(w.AccountCurrencies);
-            var temp2 = new ObservableCollection<AccountCurrencies>();
-            foreach (var getAccountResult in allResults)
+            if (w.AccountCurrencies == null || w.AccountCurrencies.Length <= 0)
             {
-                temp2.Add(getAccountResult);
+                MessageBox.Show(w.Message);
+            }
+            else
+            {
+                var allResults = new ObservableCollection<AccountCurrencies>(w.AccountCurrencies);
+                var temp2 = new ObservableCollection<AccountCurrencies>();
+                foreach (var getAccountResult in allResults)
+                {
+                    temp2.Add(getAccountResult);
+                }
+                temp.AddRange(temp2);
             }
 
-            temp.AddRange(temp2);
+
+
         }
     }
 }
